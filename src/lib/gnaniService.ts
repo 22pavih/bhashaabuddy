@@ -297,7 +297,7 @@ export async function getCallStatus(callId: string): Promise<CallStatus> {
   let phaseStartedAt = t;
 
   for (let i = 0; i < contacts.length; i++) {
-    const c = contacts[i];
+    const c = contacts[i]!;
     if (elapsed < t) break;
     activeContact = i;
     events.push({ id: `ring${i}`, kind: "ringing", contactIndex: i, label: `Agent is calling ${c.name} (${c.role}) in ${c.language}`, at: t });
@@ -380,10 +380,10 @@ export async function getCallResult(callId: string, requirement: string): Promis
     return s;
   });
   const bestIndex = scores.indexOf(Math.max(...scores));
-  const best = contacts[bestIndex];
-  const other = contacts[1 - bestIndex];
+  const best = contacts[bestIndex]!;
+  const other = contacts[1 - bestIndex] ?? best;
 
-  const priceLabel = best.details[0].label.toLowerCase();
+  const priceLabel = best.details[0]!.label.toLowerCase();
   const bestReason = budget
     ? best.price <= budget
       ? `Fits your budget of ₹${budget.toLocaleString("en-IN")} and matches your timing.`
@@ -392,10 +392,10 @@ export async function getCallResult(callId: string, requirement: string): Promis
 
   const comparison = [
     budget
-      ? `Budget (₹${budget.toLocaleString("en-IN")}): ${best.name} ${best.details[0].value} ${best.price <= budget ? "✓ within" : "✗ over"} · ${other.name} ${other.details[0].value} ${other.price <= budget ? "✓ within" : "✗ over"}`
-      : `${best.details[0].label}: ${best.name} ${best.details[0].value} vs ${other.name} ${other.details[0].value}`,
-    `${best.details[2].label}: ${best.name} — ${best.details[2].value} · ${other.name} — ${other.details[2].value}`,
-    `${best.details[3].label}: ${best.name} — ${best.details[3].value} · ${other.name} — ${other.details[3].value}`,
+      ? `Budget (₹${budget.toLocaleString("en-IN")}): ${best.name} ${best.details[0]!.value} ${best.price <= budget ? "✓ within" : "✗ over"} · ${other.name} ${other.details[0]!.value} ${other.price <= budget ? "✓ within" : "✗ over"}`
+      : `${best.details[0]!.label}: ${best.name} ${best.details[0]!.value} vs ${other.name} ${other.details[0]!.value}`,
+    `${best.details[2]!.label}: ${best.name} — ${best.details[2]!.value} · ${other.name} — ${other.details[2]!.value}`,
+    `${best.details[3]!.label}: ${best.name} — ${best.details[3]!.value} · ${other.name} — ${other.details[3]!.value}`,
   ];
 
   return { contacts, bestIndex, bestReason, comparison };

@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Shell } from "@/components/Shell";
-import { DEMO_SPEED } from "@/lib/gnaniService";
 import { useJob } from "@/lib/jobs";
 
 export const Route = createFileRoute("/call/$jobId")({
@@ -30,7 +29,7 @@ function useNow() {
 function CallingZone() {
   const { jobId } = Route.useParams();
   const job = useJob(jobId);
-  const now = useNow();
+  useNow();
   const scrollRef = useRef<HTMLDivElement>(null);
   const live = job?.live;
 
@@ -78,9 +77,7 @@ function CallingZone() {
   }
 
   const events = live?.events ?? [{ id: "sent", kind: "sent" as const, label: "Requirement sent to AI agent", at: 0 }];
-  const phaseSec = live ? Math.max(0, Math.floor((live.elapsedMs + (now - Date.now()) - live.phaseStartedAt) / 1000)) : 0;
-  const callTimer = live && live.phase === "connected" ? fmt(Math.floor((now - job.createdAt) * DEMO_SPEED / 1000) - Math.floor(live.phaseStartedAt / 1000)) : null;
-  void phaseSec;
+  const callTimer = live && live.phase === "connected" ? fmt(Math.floor((live.elapsedMs - live.phaseStartedAt) / 1000)) : null;
 
   return (
     <Shell step={1}>

@@ -27,7 +27,7 @@ function AnalysisZone() {
   if (job.status !== "analysed" || !job.results) return <Navigate to="/call/$jobId" params={{ jobId }} />;
 
   const { contacts, bestIndex, bestReason, comparison } = job.results;
-  const best = contacts[bestIndex];
+  const best = contacts[bestIndex]!;
   const ordered = [bestIndex, ...contacts.map((_, i) => i).filter((i) => i !== bestIndex)];
 
   const flash = (m: string) => {
@@ -42,7 +42,7 @@ function AnalysisZone() {
 
       <div className="space-y-4">
         {ordered.map((i) => {
-          const c = contacts[i];
+          const c = contacts[i]!;
           const isBest = i === bestIndex;
           return (
             <article key={i} className={`animate-fade-up rounded-3xl bg-card p-5 shadow-soft ${isBest ? "ring-2 ring-success" : ""}`}>

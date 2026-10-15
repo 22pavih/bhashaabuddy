@@ -59,3 +59,8 @@ Bhasha Buddy explores how AI can address a practical, everyday problem: the diff
 
 **Project:** [Live Demo](https://bhashaabuddy.lovable.app)  
 **GitHub:** [View Source Code](https://github.com/22pavih/bhashaabuddy)
+
+**App Screenshots**
+<img width="281" height="474" alt="image" src="https://github.com/user-attachments/assets/aa40afe4-7ab0-4e0b-adbd-e064ecbf5d37" />
+
+
